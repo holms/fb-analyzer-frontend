@@ -14,6 +14,7 @@ import {
 import { Search, List, Event } from '@mui/icons-material';
 import PageSearch from './components/PageSearch';
 import PageList from './components/PageList';
+import EventList from './components/EventList';
 
 // Create a theme
 const theme = createTheme({
@@ -75,7 +76,7 @@ function App() {
           >
             <Tab icon={<Search />} label="Search Pages" />
             <Tab icon={<List />} label="Monitored Pages" />
-            <Tab icon={<Event />} label="Events" disabled />
+            <Tab icon={<Event />} label="Events" />
           </Tabs>
         </AppBar>
         
@@ -87,9 +88,7 @@ function App() {
             <PageList />
           </TabPanel>
           <TabPanel value={tabValue} index={2}>
-            <Typography variant="h5" component="h2" align="center" color="text.secondary" sx={{ mt: 4 }}>
-              Events feature coming soon!
-            </Typography>
+            <EventList />
           </TabPanel>
         </Container>
       </Box>
