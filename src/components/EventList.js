@@ -28,7 +28,6 @@ import {
 } from '@mui/material';
 import { 
   Search, 
-  Delete, 
   Refresh, 
   Event, 
   LocationOn, 
@@ -49,8 +48,7 @@ const EventList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(config.DEFAULTS.PAGINATION.EVENTS_PER_PAGE);
   const [totalCount, setTotalCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [eventToDelete, setEventToDelete] = useState(null);
+
   const [selectedPageId, setSelectedPageId] = useState('');
 
   // Fetch events on component mount and when pagination changes
@@ -98,35 +96,7 @@ const EventList = () => {
     fetchEvents();
   };
 
-  // Handle event deletion
-  const handleDeleteEvent = async () => {
-    if (!eventToDelete) return;
-    
-    setLoading(true);
-    try {
-      await eventApi.deleteEvent(eventToDelete.id);
-      setEvents(events.filter(event => event.id !== eventToDelete.id));
-      setSuccessMessage(`Event "${eventToDelete.name}" deleted successfully!`);
-      setDeleteDialogOpen(false);
-      setEventToDelete(null);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Error deleting event. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  // Open delete confirmation dialog
-  const openDeleteDialog = (event) => {
-    setEventToDelete(event);
-    setDeleteDialogOpen(true);
-  };
-
-  // Close delete confirmation dialog
-  const closeDeleteDialog = () => {
-    setDeleteDialogOpen(false);
-    setEventToDelete(null);
-  };
 
   // Format date and time
   const formatDateTime = (dateTimeStr) => {
@@ -281,16 +251,7 @@ const EventList = () => {
                           <OpenInNew />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete Event">
-                        <IconButton 
-                          color="error" 
-                          size="small"
-                          onClick={() => openDeleteDialog(event)}
-                          disabled={loading}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </Tooltip>
+
                     </TableCell>
                   </TableRow>
                 ))}
@@ -315,26 +276,7 @@ const EventList = () => {
         </Paper>
       )}
 
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={closeDeleteDialog}
-      >
-        <DialogTitle>Delete Event</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete the event "{eventToDelete?.name}"? This action cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeDeleteDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleDeleteEvent} color="error" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+
 
       {/* Success message */}
       <Snackbar 

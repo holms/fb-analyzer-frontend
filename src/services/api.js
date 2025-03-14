@@ -118,21 +118,12 @@ export const eventApi = {
     }
   },
 
-  // Delete an event
-  deleteEvent: async (eventId) => {
-    try {
-      const response = await api.delete(`/events/${eventId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error deleting event:', error);
-      throw error;
-    }
-  },
-
-  // Get events for a specific page
+  // Get events for a specific page (using filter parameter instead of dedicated endpoint)
   getPageEvents: async (pageId, params = {}) => {
     try {
-      const response = await api.get(`/pages/${pageId}/events`, { params });
+      // Use the events endpoint with page_id filter parameter
+      const queryParams = { ...params, page_id: pageId };
+      const response = await api.get('/events/', { params: queryParams });
       return response.data;
     } catch (error) {
       console.error('Error getting page events:', error);
