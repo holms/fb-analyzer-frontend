@@ -94,4 +94,51 @@ export const facebookPageApi = {
   },
 };
 
+// Event API
+export const eventApi = {
+  // Get all events with pagination and filtering
+  getEvents: async (params = {}) => {
+    try {
+      const response = await api.get('/events/', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Error getting events:', error);
+      throw error;
+    }
+  },
+
+  // Get a specific event by ID
+  getEvent: async (eventId) => {
+    try {
+      const response = await api.get(`/events/${eventId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error getting event details:', error);
+      throw error;
+    }
+  },
+
+  // Delete an event
+  deleteEvent: async (eventId) => {
+    try {
+      const response = await api.delete(`/events/${eventId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      throw error;
+    }
+  },
+
+  // Get events for a specific page
+  getPageEvents: async (pageId, params = {}) => {
+    try {
+      const response = await api.get(`/pages/${pageId}/events`, { params });
+      return response.data;
+    } catch (error) {
+      console.error('Error getting page events:', error);
+      throw error;
+    }
+  }
+};
+
 export default api;
