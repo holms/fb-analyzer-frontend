@@ -39,7 +39,7 @@ export const facebookPageApi = {
       return await facebookGraphApi.searchPages(searchTerm, accessToken);
     } catch (error) {
       // Fall back to our backend API if direct call fails
-      const response = await api.get(`/pages/search`, {
+      const response = await api.get(`/events/pages/search`, {
         params: {
           q: searchTerm,
           access_token: accessToken,
@@ -52,7 +52,7 @@ export const facebookPageApi = {
   // Add a Facebook page to monitor
   addPage: async (pageData) => {
     try {
-      const response = await api.post('/pages/', pageData);
+      const response = await api.post('/events/pages/', pageData);
       return response.data;
     } catch (error) {
       console.error('Error adding Facebook page:', error);
@@ -63,7 +63,7 @@ export const facebookPageApi = {
   // Get all monitored Facebook pages
   getPages: async () => {
     try {
-      const response = await api.get('/pages/');
+      const response = await api.get('/events/pages/');
       return response.data;
     } catch (error) {
       console.error('Error getting Facebook pages:', error);
@@ -74,7 +74,7 @@ export const facebookPageApi = {
   // Delete a Facebook page from monitoring
   deletePage: async (pageId) => {
     try {
-      const response = await api.delete(`/pages/${pageId}`);
+      const response = await api.delete(`/events/pages/${pageId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting Facebook page:', error);
@@ -85,7 +85,7 @@ export const facebookPageApi = {
   // Fetch events from a specific Facebook page
   fetchPageEvents: async (pageId) => {
     try {
-      const response = await api.post(`/pages/${pageId}/fetch`);
+      const response = await api.post(`/events/pages/${pageId}/fetch`);
       return response.data;
     } catch (error) {
       console.error('Error fetching events from Facebook page:', error);
@@ -99,7 +99,7 @@ export const eventApi = {
   // Get all events with pagination and filtering
   getEvents: async (params = {}) => {
     try {
-      const response = await api.get('/events/', { params });
+      const response = await api.get('/events/events/', { params });
       return response.data;
     } catch (error) {
       console.error('Error getting events:', error);
@@ -110,7 +110,7 @@ export const eventApi = {
   // Get a specific event by ID
   getEvent: async (eventId) => {
     try {
-      const response = await api.get(`/events/${eventId}`);
+      const response = await api.get(`/events/events/${eventId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting event details:', error);
@@ -123,7 +123,7 @@ export const eventApi = {
     try {
       // Use the events endpoint with page_id filter parameter
       const queryParams = { ...params, page_id: pageId };
-      const response = await api.get('/events/', { params: queryParams });
+      const response = await api.get('/events/events/', { params: queryParams });
       return response.data;
     } catch (error) {
       console.error('Error getting page events:', error);
